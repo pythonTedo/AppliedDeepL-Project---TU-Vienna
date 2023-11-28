@@ -26,7 +26,7 @@ I expect the the most time-consuming part to be text preparation and making it i
 
 Then I need to download the LLAMA 2 weights from the offical [Meta website](https://ai.meta.com/llama/) and with help of [Hugginface Framework](https://huggingface.co/docs/transformers/main/model_doc/llama2), try to fine-tune the model with the proivded data. The time for the trianig will be unknowed as no so much information exists at the time.
 
-As the last steps, the model should be tested with given data as well as new data for generation general Bulgarian text as well as cooking-specific topics. 
+As the last steps, the model should be tested with given data as well as new data for generation general Bulgarian text as well as cooking-specific topicss. 
 
 ## Papers for this project
  - [Attention is All You Need](https://arxiv.org/abs/1202.4347)
