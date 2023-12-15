@@ -46,8 +46,22 @@ Be forced to generate grammatically correct sentences that make sense.
 Check if the model can specialize in recipe generation (since the picked dataset is focused on that aspect).
 If the model can generate text on other general topics than cocking.
 
-As an achievable metric, I want to place at least text generation in Bulgarian (no matter how grammatically correct will be).
+As an achievable metric, I want to aim for at least text generation in Bulgarian (no matter how grammatically correct will be) because based on the first notebook we see a lack of proper Bulgarian generation whatsoever.
 
-In notebook 03_Load_using_model.ipynb we can see the result of fine-tuning the model which positively surprised me. It not only achieved grammatically correct text generation in Bulgarian language but also generated cooking recipes which are different from the expected ones which shows not high over-fitting but actually understanding the ingredients and the meals themselves.
+In notebook 03_Load_using_model.ipynb we can see the result of fine-tuning the model which positively surprised me. It not only achieved grammatically correct text generation in Bulgarian language but also generated cooking recipes that are different from the expected ones BUT the ingredients make sense based on the dish, which shows not high over-fitting but actually understanding the ingredients and the meals themselves.
 Example:
-From the given instruction they propose to cook chocolate candies with cherry (Пияни вишни) but the generated text proposes to make Biscuit cake with cherry syrup (Бисквитена торта с вишни).
+From the given instruction they propose to cook chocolate candies with cherry syrup  (Пияни вишни) but the generated text proposes to make Biscuit cake with cherry syrup (Бисквитена торта с вишни).
+
+As a problem I see some generations at the end I have one sentence repeating itself again and again but you can concur the problem with maximum words for the generation parameter.
+
+Another problem is for funny recipes generated for example:
+Real recipe: Spanish sauce with veggies which is cooked with bacon
+Generated recipe: Soup with bacon and wine. 
+Interesting in this situation is the accuracy of using the same ingredients.
+
+The amount of time spent on this project is:
+ - Data pre-processing = 2h.
+ - Creating python env running successfully the environment = 4h.
+ - Reading documentation and code implementation = 5h.
+ - Training the model = 12h.
+ - Testing and evaluation of the model = 3h.
