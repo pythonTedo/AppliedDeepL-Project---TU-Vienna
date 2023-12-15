@@ -48,9 +48,9 @@ If the model can generate text on other general topics than cocking.
 
 As an achievable metric, I want to aim for at least text generation in Bulgarian (no matter how grammatically correct will be) because based on the first notebook we see a lack of proper Bulgarian generation whatsoever.
 
-In notebook 03_Load_using_model.ipynb we can see the result of fine-tuning the model which positively surprised me. It not only achieved grammatically correct text generation in Bulgarian language but also generated cooking recipes that are different from the expected ones BUT the ingredients make sense based on the dish, which shows not high over-fitting but actually understanding the ingredients and the meals themselves.
+In notebook 03_Load_using_model.ipynb we can see the result of fine-tuning the model which positively surprised me. It not only achieved grammatically correct text generation in Bulgarian language but also generated cooking recipes that are different from the expected ones BUT the ingredients make sense based on the dish, which shows not high over-fitting but actually understanding the ingredients and the meals themselves.\
 Example:
-From the given instruction they propose to cook chocolate candies with cherry syrup  (Пияни вишни) but the generated text proposes to make Biscuit cake with cherry syrup (Бисквитена торта с вишни).
+From the given instruction they propose to cook chocolate candies with cherry syrup  (Пияни вишни) but the generated text proposes to make Biscuit cake with cherry syrup (Бисквитена торта с вишни). For more generations and their trnaslations, please check out **English_generations.docx** document.
 
 As a problem I see some generations at the end I have one sentence repeating itself again and again but you can concur the problem with maximum words for the generation parameter.
 
