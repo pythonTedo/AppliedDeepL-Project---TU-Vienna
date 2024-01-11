@@ -1,0 +1,190 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Bulgarian FoodBot</title>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}"/>
+		<script defer src="{{ url_for('static', filename='js/script.js')}}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked@3.0.7/marked.min.js"></script>
+	
+	</head>
+	
+	<body>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+    	{% if messages %}
+			{% for category, message in messages %}
+				<div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+					{{ message }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+
+		<div class="container-fluid h-100">
+			<div class="row justify-content-center h-100">
+				<div class="col-9 chat">
+					<!----------------------------------------------------------------------->
+					<div class="params">
+						<form action="/set_params" method="post">
+							<label for="temperatureRange" class="form-label">Model Text Randomness</label>
+							<input type="range" name="temperature" class="form-range" min="0" max="1" id="temperatureRange" value='{{ temperature }}' step="0.1">
+							<span id="temperatureInput" class="form-label">{{ temperature }}</span>
+							<br>
+							<label for="lengthRange" class="form-label">Generated Text Lenght</label>
+							<input type="range" name="textLength" class="form-range" min="300" max="4000" id="lengthRange" value='{{ length }}' step="25">
+							<span id="lengthInput" class="form-label">{{ length }}</span>
+							<br/>
+							<label for="conversationsRange" class="form-label">Past Conversations</label>
+							<input type="range" name="conversations" class="form-range" min="0" max="4" id="conversationsRange" value='{{ conversations }}' step="1">
+							<span id="conversationsInput" class="form-label">{{ conversations }}</span>
+							<br>
+							<button type="button" class="btn btn-outline-info info" data-toggle="modal" data-target="#exampleModalLong">Info</button>
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLongTitle">How to use the model</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+										</div>
+										<div class="modal-body">
+										Fababot is a locally fine-tuned model on an open-source dataset specifically for user instructions. For now, the model is hosted on AWS because of its GPU dependency. Since it is a ChatGPT-like model, you can have conversations and ask back-and-forth questions for information that exists in the text
+										 you are sending. When you ask general knowledge questions, please keep in mind that the correctness of the information cannot be guaranteed, although the model's response sounds confident.										
+										<h4>About the Parameters:</h4>
+										<ul>
+											<li><b>Model Text Randomness</b>: This is used when we want a more diverse generation. The bigger the value is, the more uncertainty it has about the generation. <br>Recommended: 0.2 to 0.4</li>
+											<br>
+											<li><b>Generated Text Length</b>: The number of words that are being generated from the model. It consists of <b>your input + the generated output from the model</b>. <br>Recommended: keep the value high 2000 - 4000, especially when you have a big value for the <b>Past Conversations</b></li>
+											<br>
+											<li><b>Past Conversations</b>: Is used to regulate how much from the past conversations should the Fababot remember. Keep the value <b>low (0-2) for big user inputs</b> and <b>high (3-4) for short user inputs</b>. For 0, Fababot won't remember the previours input.</li>	
+										</ul>
+										When you set new values for the parameters, don't forget to click on <b>Set Parameters</b> button.
+										<br>To clean your chat histroy, click on <b>Reset Chat Session</b>.
+										</div>
+										<div class="modal-footer">
+										<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- End Modal -->
+							<br>
+							<div class="button-container">
+								<button type="submit" class="btn btn-primary">Set Parameters</button>
+								<button id="resetSessionBtn", class="btn btn-danger">Reset Chat Session</button>
+							</div>
+						</form>
+					</div>
+					<!----------------------------------------------------------------------->
+					<div class="card">
+						<div class="card-header msg_head">
+							<div class="d-flex bd-highlight">
+
+								<div class="user_info">
+									<span>FoodBot</span>
+									<p>Ask me anything!</p>
+								</div>
+							</div>
+						</div>
+						<div id="messageFormeight" class="card-body msg_card_body">
+							
+							
+						</div>
+						<div class="card-footer">
+							<form id="messageArea" class="input-group">
+                                <textarea type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off" class="form-control type_msg auto-resize" rows="2" required></textarea>
+								<div class="input-group-append">
+									<button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+        
+		<script>
+
+			function scrollToBottom() {
+				const chatContainer = document.getElementById("messageFormeight");
+				chatContainer.scrollTop = chatContainer.scrollHeight;
+			}
+			$(document).ready(function() {
+				// Load all the contet from the session
+				var storedMessages = JSON.parse(sessionStorage.getItem('chatMessages') || "[]");
+				storedMessages.forEach(function(message) {
+					$("#messageFormeight").append(message);
+				});
+				scrollToBottom()
+
+				$("#messageArea").on("submit", function(event) {
+					//initializing the store
+					var storedMessages = JSON.parse(sessionStorage.getItem('chatMessages') || "[]");
+					
+					event.preventDefault();
+					const date = new Date();
+					const hour = date.getHours();
+					const minute = date.getMinutes();
+					const str_time = hour+":"+minute;
+					var rawText = $("#text").val();
+
+					var botHtml = ""
+					//convert the text to md standard
+					//var parsedData = marked(rawText);
+					var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '<span class="msg_time_send">'+ str_time + '</span></div><div class="img_cont_msg"><img src="../static/Logo/person.png" class="rounded-circle user_img_msg"></div></div>';
+					
+					$("#text").val("");
+					$("#messageFormeight").append(userHtml);
+					//pushing the user message
+					storedMessages.push(userHtml);
+					scrollToBottom();
+
+					$.ajax({
+						beforeSend: function() {
+						// Append the typing indicator to the chat
+						var typingIndicator = '<div class="d-flex justify-content-start mb-4 typing-indicator"><div class="img_cont_msg"><img src="../static/Logo/bot.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">Typing...</div></div>';
+						$("#messageFormeight").append(typingIndicator);
+						scrollToBottom();
+					},
+						data: {
+							msg: rawText,
+						},
+						method: "POST",
+						url: "/get",
+					}).done(function(data) {
+						// Remove the typing indicator once we have a response
+  						$(".typing-indicator").remove();
+
+						if (data && data.trim() !== "") {
+							var answerdata = marked(data);
+							
+							botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="../static/Logo/bot.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer" data-provide="markdown">' + answerdata + '<span class="msg_time">' + str_time + '</span></div></div>';
+							$("#messageFormeight").append($.parseHTML(botHtml));
+							//pushing the bot message
+							storedMessages.push(botHtml);
+							sessionStorage.setItem('chatMessages', JSON.stringify(storedMessages));
+							scrollToBottom();
+						}
+					});
+					event.preventDefault();
+					
+				});
+			});
+
+		</script>
+    </body>
+</html>

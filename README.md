@@ -65,3 +65,6 @@ The amount of time spent on this project is:
  - Reading documentation and code implementation = 5h.
  - Training the model = 12h.
  - Testing and evaluation of the model = 3h.
+
+## Assignment 3
+In folder **chatpot-application** is my imporvised UI as Chatbot application.
