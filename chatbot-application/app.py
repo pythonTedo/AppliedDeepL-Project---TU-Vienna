@@ -18,8 +18,10 @@ app = Flask(__name__)
 #app.secret_key = "DemoLab Solution"
 
 app_dir = os.path.dirname(__file__) 
-base_model = "./model/base_model"
-bulgarian_model = "./model/new_model"
+#base_model = "./model/base_model"
+#bulgarian_model = "./model/new_model"
+base_model = "NousResearch/Llama-2-7b-chat-hf"
+bulgarian_model = "teodor98/LORA_Config_BG_Recepies"
 
 # Activate 8-bit precision base model loading
 use_8bit = True

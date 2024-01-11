@@ -67,4 +67,13 @@ The amount of time spent on this project is:
  - Testing and evaluation of the model = 3h.
 
 ## Assignment 3
-In folder **chatpot-application** is my imporvised UI as Chatbot application.
+In folder **chatpot-application** is my imporvised UI as Chatbot application. It is a basic flask webservice which deploys the model and provides a localhost service at port 8081. YOun need to install python3.10. To run the aplication execute the following commands:
+```
+python -m venv ./venv
+
+pip install -r requirements.txt
+
+source ./venv/bin/activate
+
+python ./chatbot-application/app.py
+```
